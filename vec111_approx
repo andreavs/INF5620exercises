@@ -1,0 +1,24 @@
+We have V = Span{(1,0,0), (0,1,0)}, and our approximation will be 
+
+u = c0(1,0,0) + c1(0,1,0) = (c0,c1,0).
+
+It is trivial to see that the solution will be (1,1,0), but let us use the full Galerkin machinery. We have that
+
+
+A = | 1, 0 |
+    | 0, 1 |
+
+as the basis vectors are orthonormal. The b-vector is 
+
+b = | 1 |
+    | 1 |
+
+Which can be checked as <(1,0,0), (1,1,1)> = <(0,1,0), (1,1,1)> = 1. We want to solve
+
+Ac = b, 
+
+i.e. 
+
+c = A^(-1)b = b.
+
+so c0 = c1 = 1, as expected. 

@@ -1,0 +1,30 @@
+For a vector in the plane (a,b):
+
+1) Associativity
+	by elementwise addition and the fact that numbers are associative, u + (v + w) = (u + v) + w.
+
+2) Commutativity
+	once again, elementwise addition and the fact that numbers commute under addition. 
+
+3) Identity element
+	the element (0,0) has this property
+
+4) Inverse element
+	the inverse of (a,b) is (-a,-b)
+
+5) distributivity 1
+	as vectors have the property k(a,b) = (ka,kb), we have k(u+v) = k( (a,b) + (c,d) ) = k(a+c,b+d) = (ka+kc,kb+kd) = (ka,kb) + (kc,kd) = ku + kv
+
+6) distributivity 2
+	(k+h)*(a,b) = ( (k+h)a, (k+h)b ) = (ka + ha, kb + hb) = (ka,kb) + (ha,hb) = ku + hu
+
+7) compatibility k(hu) = k(ha,hb) = k(h(a,b)) = (kh)*(a,b)
+
+8) identity scalar
+	1 has this property.
+
+
+For functions on the form ax+b, the arguments are entirely similar.
+
+
+For functions on the form 1 + ax^2 + bx, the sum of two such functions will be on the form 2 + cx^2 + dx, which is the wrong form. 

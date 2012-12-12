@@ -1,0 +1,12 @@
+for real functions on the form ax + b, we check
+
+1) symmetry
+	<f,g> = int f*g dx = int g*f dx = <g,f>
+
+2) Linearity in the first argument
+	<af + bg, h> = int (af+bg)*h dx = a int f*h dx + b int g*h dx = a<f,h> + b<g,h>
+
+3) positive semi-definiteness
+	<f,f> = int f^2 dx >= 0, with equality only is f = 0.
+
+There is really no reason to even specify that the functions are linear, as the space of all inegrable functions is an inner product space, we may just note that linear functions is a subspace of the general space. 

@@ -1,0 +1,14 @@
+\BOOKMARK [1][-]{section.1}{Implicit time scheme}{}
+\BOOKMARK [1][-]{section.2}{Variational form by Galerkin method}{}
+\BOOKMARK [1][-]{section.3}{Picard iteration for estimation nonlinear coefficients}{}
+\BOOKMARK [1][-]{section.4}{FEniCS implementation}{}
+\BOOKMARK [1][-]{section.5}{Verification of the code}{}
+\BOOKMARK [2][-]{subsection.5.1}{Convergence rate test}{section.5}
+\BOOKMARK [2][-]{subsection.5.2}{Method of manufactured solution}{section.5}
+\BOOKMARK [1][-]{section.6}{Sources of errors in the solution}{}
+\BOOKMARK [2][-]{subsection.6.1}{Elimination of the error due to a single Piccard iteration}{section.6}
+\BOOKMARK [1][-]{section.7}{Nonlinear diffusion of a Gaussian function}{}
+\BOOKMARK [2][-]{subsection.7.1}{Animating the solution in MayaVI}{section.7}
+\BOOKMARK [1][-]{section.8}{Handling the nonlinear term}{}
+\BOOKMARK [2][-]{subsection.8.1}{Group finite element method}{section.8}
+\BOOKMARK [2][-]{subsection.8.2}{Newtons's method}{section.8}
