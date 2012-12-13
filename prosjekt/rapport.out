@@ -12,3 +12,4 @@
 \BOOKMARK [1][-]{section.8}{Handling the nonlinear term}{}
 \BOOKMARK [2][-]{subsection.8.1}{Group finite element method}{section.8}
 \BOOKMARK [2][-]{subsection.8.2}{Newtons's method}{section.8}
+\BOOKMARK [3][-]{subsubsection.8.2.1}{Comparrison with a finite difference scheme}{subsection.8.2}

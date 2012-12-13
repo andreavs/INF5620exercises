@@ -390,7 +390,7 @@ where $F(u,v) = a(u,v)- L(v)$. If we now insert $u^n = \sum_j c_j^n v_j$. and $v
 \end{align}
 for all $i$. For such a vector equation, Newtons method can be formulated as 
 \begin{align}
- J_F(\textbf{c}_i^n)(\textbf{c}_{i+1}^n - \textbf{c}_{i}^n) = -F(\textbf{c}_i^n)
+ J_F(\textbf{c}_i^n)(\textbf{c}_{i+1}^n - \textbf{c}_{i}^n) = -\textbf{F}(\textbf{c}_i^n)
 \end{align}
 Which can be iterated and should converge to the correct solution $\textbf{c}^n$, where $J_F$ is the Jacobian for $F$, such that $(J_F)_{ij} = \partial F_i / \partial c_j$. This is a linear system of equations, and in order to solve it, we should calculate $(J_F)_{kl}$. If we note that 
 \begin{equation}
@@ -427,9 +427,61 @@ And finally, from the $\alpha(u) c_l \nabla v_l(x) \cdot \nabla v_k(x)$ term we 
 \end{align}
 Gathering all the results, we find that 
 \begin{align}
- (J_F)_{kl} = \begin{cases} {\Delta t \over \varrho}\left(\frac{2}{3}\alpha'(u_{k-1})(c_k - c_{k-1})  -\alpha(u_{k-1})c_{k-1}/h\right) & \text{if } l = k-1 \\ {2h \over 3} + \frac{1}{3}\alpha'(u_{k})(2c_k - c_{k+1}- c_{k-1}) + 2\alpha(u_{k})c_{k}/h & \text{if } l = k \\ \frac{2}{3}\alpha'(u_{k-1})(c_k - c_{k+1}) -\alpha(u_{k+1})c_{k+1}/h & \text{if } l = k+1 \\ 0 & \text{otherwise}  \end{cases}
+ (J_F)_{kl} = \begin{cases} {\Delta t \over \varrho}\left(\frac{2}{3}\alpha'(u_{k-1})(c_k - c_{k-1})  -\alpha(u_{k-1})c_{k-1}/h\right) & \text{if } l = k-1 \\ {2h \over 3} + {\Delta t \over \varrho}\left(\frac{1}{3}\alpha'(u_{k})(2c_k - c_{k+1}- c_{k-1}) + 2\alpha(u_{k})c_{k}/h\right) & \text{if } l = k \\ {\Delta t \over \varrho}\left(\frac{2}{3}\alpha'(u_{k-1})(c_k - c_{k+1}) -\alpha(u_{k+1})c_{k+1}/h\right) & \text{if } l = k+1 \\ 0 & \text{otherwise}  \end{cases}
+\end{align}
+where all the $c$'s and $u$'s are naturally evaluated at the time step $n$.
+
+\subsubsection{Comparrison with a finite difference scheme}
+In this final section we will compare the results obtained with Newton's method to the equations arising from using a finite difference scheme. For the time discretisation we use the same Backward Euler scheme, and for the space we use the symmetric scheme
+\begin{align}
+D_x  (\alpha(u) D_x u) + f(x,t) & \rightarrow D_x \left(\alpha(u) { u_{i+1/2} - u_{i-1/2} \over \Delta x} \right) + f(x_i,t)\\
+& \rightarrow \alpha(u_{i+1/2}) \left( {u_{i+1} - 2u_{i} + u_{i-1} \over \Delta x^2} \right) + \alpha(u_{i-1/2})\left( {u_{i+1} - 2u_{i} + u_{i-1} \over \Delta x^2} \right) + f(x_i,t)
+\end{align}
+So that our discretized PDE can be written as
+\begin{align}
+ u^n_i - {\Delta t \over \varrho \Delta x^2}\left((\alpha(u_{i+1/2}^n) +\alpha(u_{i-1/2}^n)) \left( {u_{i+1}^n - 2u_{i}^n + u_{i-1}^n} \right) + f(x_i,t^n) \right) = u^{n-1}_i
+\end{align}
+And we can write this as
+\begin{equation}\label{eq:FDM}
+ M\textbf{u}^n - \textbf{u}^{n-1} + {\Delta t \over \varrho \Delta x^2}\textbf{f}(\textbf{x},t) = 0,
+\end{equation}
+Where
+\begin{align}
+ M_{ij} = \begin{cases}
+	   {-\Delta t \over \varrho \Delta x^2}(\alpha(u_{i+1/2}^n) +\alpha(u_{i-1/2}^n)) & \text{if } i = j-1 \\
+	   1+{2\Delta t \over \varrho \Delta x^2}(\alpha(u_{i+1/2}^n) +\alpha(u_{i-1/2}^n)) & \text{if } i = j \\
+          {-\Delta t \over \varrho \Delta x^2}(\alpha(u_{i+1/2}^n) +\alpha(u_{i-1/2}^n)) & \text{if } i = j+1 \\
+          0 & \text{otherwise}
+          \end{cases}
+\end{align}
+The $\alpha$ terms makes this once again non-linear in $u^n$, and so  we can find an iterated solution by Newton's method, 
+\begin{align}
+ J_F(\textbf{u}_i^n)(\textbf{u}_{i+1}^n - \textbf{u}_{i}^n) = -\textbf{F}(\textbf{u}_i^n) 
+\end{align}
+where $\textbf{F}(\textbf{u}_i^n)$ is precisely the left hand side of equation \eqref{eq:FDM}. The Jacobian will in this case be 
+\begin{align}
+ (J_F)_{kl} &= {\partial F_k \over \partial u_l} \\
+ & = {\partial \over \partial u_l} \sum_j M_{jk}u_k
+\end{align}
+At this point it will be useful to relate $\alpha{u_{i+1/2}}$ to the integer indices. We make the approximation $\alpha(u_{i+1/2}) \approx (\alpha(u_i) + \alpha(u_{i+1}))/2$. In this way, the Jacobian becomes
+\begin{align}
+ (J_F)_{kl} &= \sum_j {\partial M_{jk} \over \partial u_l}u_k + \sum_{j} M_{jl}\delta_{kl}
+\end{align}
+and we have that the sum over $j$ only contributes when $|j-k|\le 1$. Also
+\begin{align}
+ \sum_j {\partial M_{jk} \over \partial u_l} = \begin{cases}
+                                                {-\Delta t \over \varrho \Delta x^2}\alpha'(u_{k-1}) & \text{if } k=l-1 \\
+                                                {2\Delta t \over \varrho \Delta x^2}\alpha'(u_{k}) & \text{if } k=l \\
+                                                {-\Delta t \over \varrho \Delta x^2}\alpha'(u_{k+1}) & \text{if } k=l+1 \\
+                                               \end{cases}
+\end{align}
+So that in total, 
+\begin{align}
+ (J_F)_{kl} = \begin{cases}
+                                                {-\Delta t \over \varrho \Delta x^2}\alpha'(u_{k-1})u_k & \text{if } k=l-1 \\
+                                                1+{2\Delta t \over \varrho \Delta x^2}(\alpha(u_{k+1}^n) + 2\alpha(u_k) +\alpha(u_{k-1}))+{2\Delta t \over \varrho \Delta x^2}\alpha'(u_{k})u_k & \text{if } k=l \\
+                                                {-\Delta t \over \varrho \Delta x^2}\alpha'(u_{k+1})u_k & \text{if } k=l+1 \\
+                                               \end{cases}
 \end{align}
 
-
 \end{document}
-
